@@ -24,6 +24,16 @@
   #progress-bar-bg { background: #eee; border-radius: 4px; height: 8px; margin-top: 6px; overflow: hidden; }
   #progress-bar-fill { background: #2563eb; height: 100%; width: 0%; transition: width 0.2s; }
   #stats { margin-top: 6px; color: #555; }
+  #failed-panel {
+    position: absolute; bottom: 10px; left: 10px; z-index: 1000;
+    background: white; padding: 10px 14px; border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3); font-size: 12px; max-width: 340px;
+    max-height: 240px; overflow-y: auto; display: none;
+  }
+  #failed-panel h4 { margin: 0 0 6px 0; font-size: 13px; }
+  #failed-panel ol { margin: 0; padding-left: 18px; }
+  #failed-panel li { margin-bottom: 6px; }
+  #failed-panel .addr { color: #777; }
 </style>
 </head>
 <body>
@@ -37,6 +47,10 @@
 <div id="controls">
   <h3>OPUS CT Stations</h3>
   <div id="layer-toggles"></div>
+</div>
+<div id="failed-panel">
+  <h4>Could not be located:</h4>
+  <ol id="failed-list"></ol>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -92,6 +106,7 @@ const statsDiv = document.getElementById('stats');
 
 let geocoded = 0;
 let failed = 0;
+const failedStations = [];
 const total = STATIONS.length;
 
 function updateProgress() {
@@ -144,9 +159,11 @@ async function geocodeOne(station) {
       geocoded++;
     } else {
       failed++;
+      failedStations.push(station);
     }
   } catch (e) {
     failed++;
+    failedStations.push(station);
   }
   updateProgress();
 }
@@ -158,6 +175,18 @@ async function runGeocoding() {
     await new Promise(r => setTimeout(r, 1050));
   }
   progressLabel.textContent = `Finished: ${geocoded} placed, ${failed} could not be located.`;
+
+  if (failedStations.length > 0) {
+    const panel = document.getElementById('failed-panel');
+    const list = document.getElementById('failed-list');
+    const esc = (str) => (str || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    failedStations.forEach(s => {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${esc(s.name)}</strong> <span class="addr">(${esc(s.layer)})</span><br><span class="addr">${esc(s.address)}</span>`;
+      list.appendChild(li);
+    });
+    panel.style.display = 'block';
+  }
 }
 
 runGeocoding();
