@@ -132,6 +132,21 @@ labelsLayer.getContainer && labelsLayer.on('add', () => {
   if (container) container.style.filter = 'invert(100%) sepia(100%) saturate(4000%) hue-rotate(220deg) brightness(90%) contrast(110%) drop-shadow(1px 0 0 #ccc) drop-shadow(-1px 0 0 #ccc) drop-shadow(0 1px 0 #ccc) drop-shadow(0 -1px 0 #ccc)';
 });
 
+// Connecticut town boundaries - 2px gray stroke
+fetch('https://raw.githubusercontent.com/HandsOnDataViz/ct-boundaries/main/ct-towns-2022-simple-datactgov.geojson')
+  .then(res => res.json())
+  .then(data => {
+    L.geoJSON(data, {
+      style: {
+        color: '#999999',
+        weight: 2,
+        opacity: 0.8,
+        fill: false
+      }
+    }).addTo(map);
+  })
+  .catch(err => console.error('Failed to load CT town boundaries:', err));
+
 // Connecticut state outline - heavy black border
 fetch('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json')
   .then(res => res.json())
