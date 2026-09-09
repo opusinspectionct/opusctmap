@@ -82,6 +82,7 @@
 <div id="controls">
   <h3>OPUS CT Stations</h3>
   <div id="layer-toggles"></div>
+  <div id="last-updated" style="margin-top:8px; padding-top:8px; border-top:1px solid #ddd; color:#777; font-size:11px;"></div>
 </div>
 <div id="failed-panel">
   <h4>Could not be located:</h4>
@@ -171,16 +172,57 @@ Object.keys(LAYER_COLORS).forEach(layer => {
   layerGroups[layer] = L.layerGroup().addTo(map);
 });
 
+// Track category counts and last-changed date across visits, so we can
+// show a [+n]/[-n] delta per category and a "last updated" date whenever
+// the underlying station data actually changes (not just on every load).
+const COUNTS_HISTORY_KEY = 'opusCtCountsHistoryV1';
+let countsHistory = null;
+try {
+  countsHistory = JSON.parse(localStorage.getItem(COUNTS_HISTORY_KEY) || 'null');
+} catch (e) {
+  countsHistory = null;
+}
+
+const currentCounts = {};
+Object.keys(LAYER_COLORS).forEach(layer => {
+  currentCounts[layer] = STATIONS.filter(s => s.layer === layer).length;
+});
+
+const previousCounts = (countsHistory && countsHistory.counts) ? countsHistory.counts : null;
+const countsChanged = !previousCounts || Object.keys(LAYER_COLORS).some(
+  layer => (previousCounts[layer] || 0) !== currentCounts[layer]
+);
+
+let lastUpdatedDate;
+if (countsChanged || !countsHistory) {
+  lastUpdatedDate = new Date().toISOString().slice(0, 10);
+  try {
+    localStorage.setItem(COUNTS_HISTORY_KEY, JSON.stringify({
+      counts: currentCounts,
+      lastUpdated: lastUpdatedDate
+    }));
+  } catch (e) { /* ignore */ }
+} else {
+  lastUpdatedDate = countsHistory.lastUpdated;
+}
+
+document.getElementById('last-updated').textContent = 'Last updated: ' + lastUpdatedDate;
+
 // Build toggle UI
 const togglesDiv = document.getElementById('layer-toggles');
 Object.keys(LAYER_COLORS).forEach(layer => {
-  const count = STATIONS.filter(s => s.layer === layer).length;
+  const count = currentCounts[layer];
+  let deltaLabel = '';
+  if (previousCounts && Object.prototype.hasOwnProperty.call(previousCounts, layer)) {
+    const delta = count - previousCounts[layer];
+    deltaLabel = ' [' + (delta > 0 ? '+' + delta : delta) + ']';
+  }
   const id = 'toggle-' + layer.replace(/[^a-zA-Z0-9]/g, '');
   const wrapper = document.createElement('label');
   wrapper.innerHTML = `
     <input type="checkbox" id="${id}" checked>
     <span class="swatch" style="background:${LAYER_COLORS[layer]}"></span>
-    ${layer} (${count})
+    ${layer} (${count})${deltaLabel}
   `;
   togglesDiv.appendChild(wrapper);
   wrapper.querySelector('input').addEventListener('change', (e) => {
@@ -210,13 +252,14 @@ function updateProgress() {
   statsDiv.textContent = `Placed: ${geocoded}  |  Failed: ${failed}`;
 }
 
-function makePopupHtml(s) {
+function makePopupHtml(s, approx) {
   const esc = (str) => (str || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   return `
     <div style="max-width:260px;">
       <strong>${esc(s.name)}</strong><br>
       ${esc(s.address)}<br>
       <em>${esc(s.layer)}</em>${s.service ? ' &middot; ' + esc(s.service) : ''}<br>
+      ${approx ? '<span style="color:#b45309;">&#9888; Approximate location (exact address not found)</span><br>' : ''}
       ${s.status ? '<b>Status:</b> ' + esc(s.status) + '<br>' : ''}
       ${s.id ? '<b>ID:</b> ' + esc(s.id) + '<br>' : ''}
       ${s.phone ? '<b>Phone:</b> ' + esc(s.phone) + '<br>' : ''}
@@ -249,16 +292,17 @@ setInterval(() => {
   }
 }, 3000);
 
-function placeMarker(station, lat, lon) {
+function placeMarker(station, lat, lon, approx) {
   const color = LAYER_COLORS[station.layer] || "#555";
   const marker = L.circleMarker([lat, lon], {
-    radius: 7,
+    radius: approx ? 9 : 7,
     fillColor: color,
-    color: "#333",
-    weight: 1.5,
-    fillOpacity: 0.95
+    color: approx ? "#b45309" : "#333",
+    weight: approx ? 2.5 : 1.5,
+    dashArray: approx ? "3,2" : null,
+    fillOpacity: approx ? 0.55 : 0.95
   });
-  marker.bindPopup(makePopupHtml(station));
+  marker.bindPopup(makePopupHtml(station, approx));
   const group = layerGroups[station.layer];
   if (group) {
     marker.addTo(group);
@@ -290,45 +334,70 @@ function stripAddressForGeocoding(address) {
     .trim();
 }
 
+async function fetchNominatim(query) {
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`;
+  const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+  const results = await resp.json();
+  if (results && results.length > 0) {
+    return [parseFloat(results[0].lat), parseFloat(results[0].lon)];
+  }
+  return null;
+}
+
 async function geocodeOne(station) {
   const cacheKey = station.address;
   const cached = geocodeCache[cacheKey];
 
   if (cached === null) {
-    // Previously confirmed as not locatable - don't re-try or re-count against rate limit
+    // Previously confirmed as not locatable at all - don't re-try
     failed++;
     failedStations.push(station);
     updateProgress();
     return;
   }
   if (cached) {
-    placeMarker(station, cached[0], cached[1]);
+    placeMarker(station, cached[0], cached[1], cached[2]);
     geocoded++;
     updateProgress();
     return;
   }
 
+  // Build a chain of progressively looser queries. If the exact street
+  // address can't be found, fall back to city+zip, then city alone, so
+  // every station lands SOMEWHERE on the map rather than being dropped -
+  // fallback placements are flagged as approximate in the popup and marker.
   const cleanAddress = stripAddressForGeocoding(station.address);
-  const query = encodeURIComponent(cleanAddress);
-  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${query}`;
-  try {
-    const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
-    const results = await resp.json();
-    if (results && results.length > 0) {
-      const lat = parseFloat(results[0].lat);
-      const lon = parseFloat(results[0].lon);
-      geocodeCache[cacheKey] = [lat, lon];
-      saveCacheSoon();
-      placeMarker(station, lat, lon);
-      geocoded++;
-    } else {
-      geocodeCache[cacheKey] = null;
-      saveCacheSoon();
-      failed++;
-      failedStations.push(station);
+  const state = station.state || 'CT';
+  const queries = [cleanAddress];
+  if (station.city && station.zip) queries.push(`${station.city}, ${state} ${station.zip}`);
+  if (station.city) queries.push(`${station.city}, ${state}`);
+
+  let result = null;
+  let approx = false;
+  for (let i = 0; i < queries.length; i++) {
+    try {
+      result = await fetchNominatim(queries[i]);
+    } catch (e) {
+      result = null;
     }
-  } catch (e) {
-    // Network/rate-limit error - don't cache, so it's retried next load
+    if (result) {
+      approx = i > 0;
+      break;
+    }
+    if (i < queries.length - 1) {
+      // Respect Nominatim's usage policy between fallback attempts too
+      await new Promise(r => setTimeout(r, 1050));
+    }
+  }
+
+  if (result) {
+    geocodeCache[cacheKey] = [result[0], result[1], approx];
+    saveCacheSoon();
+    placeMarker(station, result[0], result[1], approx);
+    geocoded++;
+  } else {
+    geocodeCache[cacheKey] = null;
+    saveCacheSoon();
     failed++;
     failedStations.push(station);
   }
