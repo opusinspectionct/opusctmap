@@ -272,7 +272,7 @@ function makePopupHtml(s, approx) {
 // Persistent geocode cache in localStorage so repeat visits don't
 // re-hit Nominatim at all. Cache key includes a version tag so we can
 // bust it later if the geocoding logic changes.
-const GEOCODE_CACHE_KEY = 'opusCtGeocodeCacheV1';
+const GEOCODE_CACHE_KEY = 'opusCtGeocodeCacheV2';
 let geocodeCache = {};
 try {
   geocodeCache = JSON.parse(localStorage.getItem(GEOCODE_CACHE_KEY) || '{}');
