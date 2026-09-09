@@ -103,7 +103,8 @@ const LAYER_COLORS = {
   "Decert/Notes": "#6b7280"
 };
 
-const map = L.map('map').setView([41.6, -72.7], 9);
+const map = L.map('map', { zoomControl: false }).setView([41.6, -72.7], 9);
+L.control.zoom({ position: 'bottomleft' }).addTo(map);
 
 document.getElementById('help-btn').addEventListener('click', () => {
   document.getElementById('help-overlay').style.display = 'flex';
@@ -116,10 +117,20 @@ document.getElementById('help-overlay').addEventListener('click', (e) => {
     document.getElementById('help-overlay').style.display = 'none';
   }
 });
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_33uz_1_86a95674329c905631fbb4de', {
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png?key=cb1_33uz_1_86a95674329c905631fbb4de', {
   maxZoom: 19,
   attribution: '&copy; OpenStreetMap contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
 }).addTo(map);
+
+// Labels layer, tinted light blue via CSS filter
+const labelsLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png?key=cb1_33uz_1_86a95674329c905631fbb4de', {
+  maxZoom: 19,
+  pane: 'overlayPane'
+}).addTo(map);
+labelsLayer.getContainer && labelsLayer.on('add', () => {
+  const container = labelsLayer.getContainer();
+  if (container) container.style.filter = 'invert(100%) sepia(100%) saturate(4000%) hue-rotate(220deg) brightness(90%) contrast(110%) drop-shadow(1px 0 0 #ccc) drop-shadow(-1px 0 0 #ccc) drop-shadow(0 1px 0 #ccc) drop-shadow(0 -1px 0 #ccc)';
+});
 
 // Connecticut state outline - heavy black border
 fetch('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json')
