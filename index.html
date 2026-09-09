@@ -226,8 +226,90 @@ function makePopupHtml(s) {
   `;
 }
 
+// Persistent geocode cache in localStorage so repeat visits don't
+// re-hit Nominatim at all. Cache key includes a version tag so we can
+// bust it later if the geocoding logic changes.
+const GEOCODE_CACHE_KEY = 'opusCtGeocodeCacheV1';
+let geocodeCache = {};
+try {
+  geocodeCache = JSON.parse(localStorage.getItem(GEOCODE_CACHE_KEY) || '{}');
+} catch (e) {
+  geocodeCache = {};
+}
+let cacheDirty = false;
+function saveCacheSoon() {
+  cacheDirty = true;
+}
+setInterval(() => {
+  if (cacheDirty) {
+    try {
+      localStorage.setItem(GEOCODE_CACHE_KEY, JSON.stringify(geocodeCache));
+    } catch (e) { /* storage full or unavailable, ignore */ }
+    cacheDirty = false;
+  }
+}, 3000);
+
+function placeMarker(station, lat, lon) {
+  const color = LAYER_COLORS[station.layer] || "#555";
+  const marker = L.circleMarker([lat, lon], {
+    radius: 7,
+    fillColor: color,
+    color: "#333",
+    weight: 1.5,
+    fillOpacity: 0.95
+  });
+  marker.bindPopup(makePopupHtml(station));
+  const group = layerGroups[station.layer];
+  if (group) {
+    marker.addTo(group);
+  }
+}
+
+// Strip suite/unit/rear-style qualifiers before geocoding so the
+// geocoder gets a clean street address, while the full address
+// (with qualifier) is still what's stored and shown in the popup.
+function stripAddressForGeocoding(address) {
+  return address
+    // "REAR" or "Rear" as a standalone word, optionally with a number
+    .replace(/\bREAR\b\s*#?\d*/gi, '')
+    // "Back Lot"
+    .replace(/\bBACK\s+LOT\b/gi, '')
+    // "Unit 2", "Unit #2", "Unit A"
+    .replace(/\bUNIT\s*#?\s*[A-Za-z0-9]+\b/gi, '')
+    // "Suite 2", "Ste 2", "Suite #2"
+    .replace(/\b(SUITE|STE)\s*#?\s*[A-Za-z0-9]+\b/gi, '')
+    // "Apt 2", "Apartment 2"
+    .replace(/\b(APT|APARTMENT)\s*#?\s*[A-Za-z0-9]+\b/gi, '')
+    // "Building 2", "Bldg 2"
+    .replace(/\b(BUILDING|BLDG)\s*#?\s*[A-Za-z0-9]+\b/gi, '')
+    // Stray bare "#2" left over, and clean up extra commas/spaces
+    .replace(/#\s*[A-Za-z0-9]+/g, '')
+    .replace(/,\s*,/g, ',')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/,\s*$/, '')
+    .trim();
+}
+
 async function geocodeOne(station) {
-  const query = encodeURIComponent(`${station.address}`);
+  const cacheKey = station.address;
+  const cached = geocodeCache[cacheKey];
+
+  if (cached === null) {
+    // Previously confirmed as not locatable - don't re-try or re-count against rate limit
+    failed++;
+    failedStations.push(station);
+    updateProgress();
+    return;
+  }
+  if (cached) {
+    placeMarker(station, cached[0], cached[1]);
+    geocoded++;
+    updateProgress();
+    return;
+  }
+
+  const cleanAddress = stripAddressForGeocoding(station.address);
+  const query = encodeURIComponent(cleanAddress);
   const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${query}`;
   try {
     const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
@@ -235,25 +317,18 @@ async function geocodeOne(station) {
     if (results && results.length > 0) {
       const lat = parseFloat(results[0].lat);
       const lon = parseFloat(results[0].lon);
-      const color = LAYER_COLORS[station.layer] || "#555";
-      const marker = L.circleMarker([lat, lon], {
-        radius: 7,
-        fillColor: color,
-        color: "#333",
-        weight: 1.5,
-        fillOpacity: 0.95
-      });
-      marker.bindPopup(makePopupHtml(station));
-      const group = layerGroups[station.layer];
-      if (group) {
-        marker.addTo(group);
-      }
+      geocodeCache[cacheKey] = [lat, lon];
+      saveCacheSoon();
+      placeMarker(station, lat, lon);
       geocoded++;
     } else {
+      geocodeCache[cacheKey] = null;
+      saveCacheSoon();
       failed++;
       failedStations.push(station);
     }
   } catch (e) {
+    // Network/rate-limit error - don't cache, so it's retried next load
     failed++;
     failedStations.push(station);
   }
@@ -262,10 +337,17 @@ async function geocodeOne(station) {
 
 async function runGeocoding() {
   for (let i = 0; i < STATIONS.length; i++) {
+    const isCached = Object.prototype.hasOwnProperty.call(geocodeCache, STATIONS[i].address);
     await geocodeOne(STATIONS[i]);
-    // Respect Nominatim's usage policy: max ~1 request/sec
-    await new Promise(r => setTimeout(r, 1050));
+    // Only throttle for addresses that actually hit the network -
+    // cached lookups are instant and don't count against Nominatim's limit
+    if (!isCached) {
+      await new Promise(r => setTimeout(r, 1050));
+    }
   }
+  try {
+    localStorage.setItem(GEOCODE_CACHE_KEY, JSON.stringify(geocodeCache));
+  } catch (e) { /* ignore */ }
   progressLabel.textContent = `Finished: ${geocoded} placed, ${failed} could not be located.`;
 
   if (failedStations.length > 0) {
