@@ -269,29 +269,6 @@ function makePopupHtml(s, approx) {
   `;
 }
 
-// Persistent geocode cache in localStorage so repeat visits don't
-// re-hit Nominatim at all. Cache key includes a version tag so we can
-// bust it later if the geocoding logic changes.
-const GEOCODE_CACHE_KEY = 'opusCtGeocodeCacheV2';
-let geocodeCache = {};
-try {
-  geocodeCache = JSON.parse(localStorage.getItem(GEOCODE_CACHE_KEY) || '{}');
-} catch (e) {
-  geocodeCache = {};
-}
-let cacheDirty = false;
-function saveCacheSoon() {
-  cacheDirty = true;
-}
-setInterval(() => {
-  if (cacheDirty) {
-    try {
-      localStorage.setItem(GEOCODE_CACHE_KEY, JSON.stringify(geocodeCache));
-    } catch (e) { /* storage full or unavailable, ignore */ }
-    cacheDirty = false;
-  }
-}, 3000);
-
 function placeMarker(station, lat, lon, approx) {
   const color = LAYER_COLORS[station.layer] || "#555";
   const marker = L.circleMarker([lat, lon], {
@@ -309,95 +286,34 @@ function placeMarker(station, lat, lon, approx) {
   }
 }
 
-// Strip suite/unit/rear-style qualifiers before geocoding so the
-// geocoder gets a clean street address, while the full address
-// (with qualifier) is still what's stored and shown in the popup.
-function stripAddressForGeocoding(address) {
-  return address
-    // "REAR" or "Rear" as a standalone word, optionally with a number
-    .replace(/\bREAR\b\s*#?\d*/gi, '')
-    // "Back Lot"
-    .replace(/\bBACK\s+LOT\b/gi, '')
-    // "Unit 2", "Unit #2", "Unit A"
-    .replace(/\bUNIT\s*#?\s*[A-Za-z0-9]+\b/gi, '')
-    // "Suite 2", "Ste 2", "Suite #2"
-    .replace(/\b(SUITE|STE)\s*#?\s*[A-Za-z0-9]+\b/gi, '')
-    // "Apt 2", "Apartment 2"
-    .replace(/\b(APT|APARTMENT)\s*#?\s*[A-Za-z0-9]+\b/gi, '')
-    // "Building 2", "Bldg 2"
-    .replace(/\b(BUILDING|BLDG)\s*#?\s*[A-Za-z0-9]+\b/gi, '')
-    // Stray bare "#2" left over, and clean up extra commas/spaces
-    .replace(/#\s*[A-Za-z0-9]+/g, '')
-    .replace(/,\s*,/g, ',')
-    .replace(/\s{2,}/g, ' ')
-    .replace(/,\s*$/, '')
-    .trim();
+// PRECOMPUTED COORDINATES
+// -------------------------
+// data/coordinates.json is built by geocode_stations.py (run monthly,
+// offline, respecting Nominatim's real usage policy) and committed to
+// the repo alongside the CSVs. The map just reads it - no live
+// geocoding, no rate limits, no waiting.
+let PRECOMPUTED_COORDS = {};
+
+async function loadPrecomputedCoords() {
+  try {
+    const resp = await fetch('data/coordinates.json');
+    if (resp.ok) {
+      PRECOMPUTED_COORDS = await resp.json();
+    }
+  } catch (e) {
+    console.warn('Could not load data/coordinates.json - map will be empty until it exists.', e);
+  }
 }
 
-async function fetchNominatim(query) {
-  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`;
-  const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
-  const results = await resp.json();
-  if (results && results.length > 0) {
-    return [parseFloat(results[0].lat), parseFloat(results[0].lon)];
-  }
-  return null;
-}
-
-async function geocodeOne(station) {
-  const cacheKey = station.address;
-  const cached = geocodeCache[cacheKey];
-
-  if (cached === null) {
-    // Previously confirmed as not locatable at all - don't re-try
-    failed++;
-    failedStations.push(station);
-    updateProgress();
-    return;
-  }
-  if (cached) {
-    placeMarker(station, cached[0], cached[1], cached[2]);
-    geocoded++;
-    updateProgress();
-    return;
-  }
-
-  // Build a chain of progressively looser queries. If the exact street
-  // address can't be found, fall back to city+zip, then city alone, so
-  // every station lands SOMEWHERE on the map rather than being dropped -
-  // fallback placements are flagged as approximate in the popup and marker.
-  const cleanAddress = stripAddressForGeocoding(station.address);
-  const state = station.state || 'CT';
-  const queries = [cleanAddress];
-  if (station.city && station.zip) queries.push(`${station.city}, ${state} ${station.zip}`);
-  if (station.city) queries.push(`${station.city}, ${state}`);
-
-  let result = null;
-  let approx = false;
-  for (let i = 0; i < queries.length; i++) {
-    try {
-      result = await fetchNominatim(queries[i]);
-    } catch (e) {
-      result = null;
-    }
-    if (result) {
-      approx = i > 0;
-      break;
-    }
-    if (i < queries.length - 1) {
-      // Respect Nominatim's usage policy between fallback attempts too
-      await new Promise(r => setTimeout(r, 1050));
-    }
-  }
-
-  if (result) {
-    geocodeCache[cacheKey] = [result[0], result[1], approx];
-    saveCacheSoon();
-    placeMarker(station, result[0], result[1], approx);
+function placeStation(station) {
+  const entry = PRECOMPUTED_COORDS[station.address];
+  if (entry) {
+    placeMarker(station, entry.lat, entry.lon, !!entry.approx);
     geocoded++;
   } else {
-    geocodeCache[cacheKey] = null;
-    saveCacheSoon();
+    // Not in coordinates.json yet - most likely a station added since
+    // the last time geocode_stations.py was run. Re-run that script
+    // and push the updated coordinates.json to fix this.
     failed++;
     failedStations.push(station);
   }
@@ -405,18 +321,10 @@ async function geocodeOne(station) {
 }
 
 async function runGeocoding() {
+  await loadPrecomputedCoords();
   for (let i = 0; i < STATIONS.length; i++) {
-    const isCached = Object.prototype.hasOwnProperty.call(geocodeCache, STATIONS[i].address);
-    await geocodeOne(STATIONS[i]);
-    // Only throttle for addresses that actually hit the network -
-    // cached lookups are instant and don't count against Nominatim's limit
-    if (!isCached) {
-      await new Promise(r => setTimeout(r, 1050));
-    }
+    placeStation(STATIONS[i]);
   }
-  try {
-    localStorage.setItem(GEOCODE_CACHE_KEY, JSON.stringify(geocodeCache));
-  } catch (e) { /* ignore */ }
   progressLabel.textContent = `Finished: ${geocoded} placed, ${failed} could not be located.`;
 
   if (failedStations.length > 0) {
