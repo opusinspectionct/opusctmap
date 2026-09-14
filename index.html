@@ -83,11 +83,11 @@
   <h3>OPUS CT Stations</h3>
   <div id="map-mode-buttons" style="display:flex; gap:4px; margin-bottom:8px;">
     <button class="map-mode-btn" data-mode="dark" style="flex:1; padding:6px 2px; border-radius:6px; border:1px solid #ccc; background:#333; color:#fff; cursor:pointer; font-size:11px;">Dark</button>
-    <button class="map-mode-btn" data-mode="street" style="flex:1; padding:6px 2px; border-radius:6px; border:1px solid #ccc; background:#f5f5f5; cursor:pointer; font-size:11px;">Street</button>
     <button class="map-mode-btn" data-mode="satellite" style="flex:1; padding:6px 2px; border-radius:6px; border:1px solid #ccc; background:#f5f5f5; cursor:pointer; font-size:11px;">Satellite</button>
   </div>
   <div id="layer-toggles"></div>
-  <div id="last-updated" style="margin-top:8px; padding-top:8px; border-top:1px solid #ddd; color:#777; font-size:11px;"></div>
+  <div id="stations-summary" style="margin-top:8px; padding-top:8px; border-top:1px solid #ddd; font-size:11px;"></div>
+  <div id="last-updated" style="margin-top:4px; color:#777; font-size:11px;"></div>
 </div>
 <div id="failed-panel">
   <h4>Could not be located:</h4>
@@ -139,13 +139,6 @@ labelsLayer.getContainer && labelsLayer.on('add', () => {
   if (container) container.style.filter = 'invert(100%) sepia(100%) saturate(4000%) hue-rotate(220deg) brightness(90%) contrast(110%) drop-shadow(1px 0 0 #ccc) drop-shadow(-1px 0 0 #ccc) drop-shadow(0 1px 0 #ccc) drop-shadow(0 -1px 0 #ccc)';
 });
 
-// STREET MODE - full detail basemap with road names, good for zooming in
-// on a station to see exactly which road it's on
-const streetLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/voyager/{z}/{x}/{y}{r}.png?key=cb1_33uz_1_86a95674329c905631fbb4de', {
-  maxZoom: 19,
-  attribution: '&copy; OpenStreetMap contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-});
-
 // SATELLITE MODE - aerial imagery (Esri World Imagery, free, no key needed)
 const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
   maxZoom: 19,
@@ -155,7 +148,6 @@ const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/
 // layer on top of it too for road/town names
 const modeLayers = {
   dark: [darkBase, labelsLayer],
-  street: [streetLayer],
   satellite: [satelliteLayer, labelsLayer]
 };
 
@@ -283,6 +275,7 @@ Object.keys(LAYER_COLORS).forEach(layer => {
 const progressLabel = document.getElementById('progress-label');
 const progressFill = document.getElementById('progress-bar-fill');
 const statsDiv = document.getElementById('stats');
+const stationsSummary = document.getElementById('stations-summary');
 
 let geocoded = 0;
 let failed = 0;
@@ -296,6 +289,10 @@ function updateProgress() {
     ? `Geocoding stations... (${geocoded + failed}/${total})`
     : `Done geocoding.`;
   statsDiv.textContent = `Placed: ${geocoded}  |  Failed: ${failed}`;
+  stationsSummary.innerHTML = `Plotted: ${geocoded}` +
+    (failed > 0
+      ? ` &nbsp;|&nbsp; <span style="color:#dc2626; font-weight:bold;">Failed: ${failed}</span>`
+      : ` &nbsp;|&nbsp; Failed: 0`);
 }
 
 function makePopupHtml(s, approx) {
@@ -371,7 +368,7 @@ async function runGeocoding() {
   for (let i = 0; i < STATIONS.length; i++) {
     placeStation(STATIONS[i]);
   }
-  progressLabel.textContent = `Finished: ${geocoded} placed, ${failed} could not be located.`;
+  document.getElementById('progress-wrap').style.display = 'none';
 
   if (failedStations.length > 0) {
     const panel = document.getElementById('failed-panel');
