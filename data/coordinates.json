@@ -54,126 +54,6 @@
     "lon": -72.4681889,
     "approx": false
   },
-  "95 Vincent P. Kelly Road": {
-    "lat": 41.6570062,
-    "lon": -72.9193014,
-    "approx": false
-  },
-  "600 Lindley Street": {
-    "lat": 41.198782,
-    "lon": -73.196763,
-    "approx": false
-  },
-  "90 Sargent Drive": {
-    "lat": 41.2890863,
-    "lon": -72.9253491,
-    "approx": false
-  },
-  "474 West Main Street": {
-    "lat": 41.048183,
-    "lon": -73.5576324,
-    "approx": false
-  },
-  "710 Sherman Pkwy": {
-    "lat": 41.3300348,
-    "lon": -72.9385051,
-    "approx": false
-  },
-  "200 Bloomfield Avenue": {
-    "lat": 41.799161,
-    "lon": -72.7137661,
-    "approx": false
-  },
-  "60 Marsh Hill Road": {
-    "lat": 41.2491168,
-    "lon": -73.0028823,
-    "approx": false
-  },
-  "140 Pond Lily Avenue": {
-    "lat": 41.341117,
-    "lon": -72.9723585,
-    "approx": false
-  },
-  "171 Salem Turnpike": {
-    "lat": 41.5135837,
-    "lon": -72.1202159,
-    "approx": false
-  },
-  "60 State Street, Rear": {
-    "lat": 41.7187483,
-    "lon": -72.6559379,
-    "approx": false
-  },
-  "526 Huntington Avenue": {
-    "lat": 41.2849344,
-    "lon": -72.8900117,
-    "approx": false
-  },
-  "76 Meadow Street": {
-    "lat": 41.7609847,
-    "lon": -72.6556563,
-    "approx": false
-  },
-  "47 Mill Hill Rd": {
-    "lat": 41.5780454,
-    "lon": -72.3622683,
-    "approx": false
-  },
-  "100 Washington St": {
-    "lat": 41.7598059,
-    "lon": -72.6816949,
-    "approx": false
-  },
-  "360 Bridgeport Ave": {
-    "lat": 41.2963008,
-    "lon": -73.1069042,
-    "approx": false
-  },
-  "4 Meadow St": {
-    "lat": 41.7438576,
-    "lon": -72.6719522,
-    "approx": false
-  },
-  "1175 Woodend Rd": {
-    "lat": 41.1696821,
-    "lon": -73.1442712,
-    "approx": false
-  },
-  "72 Sandpit Rd": {
-    "lat": 41.394817,
-    "lon": -73.4540111,
-    "approx": true
-  },
-  "555 Lakewiid Rd": {
-    "lat": 41.5541144,
-    "lon": -73.0435615,
-    "approx": true
-  },
-  "1441 N Colony Rd": {
-    "lat": 41.5707596,
-    "lon": -72.7747677,
-    "approx": false
-  },
-  "4 Hamilton St": {
-    "lat": 41.2984666,
-    "lon": -72.9141303,
-    "approx": false
-  },
-  "1629 King St": {
-    "lat": 41.9470761,
-    "lon": -72.6015238,
-    "approx": false
-  },
-  "134 Club Rd": {
-    "lat": 41.7230978,
-    "lon": -72.1843298,
-    "approx": false
-  },
-  "578 Vauxhall St Ext": {
-    "lat": 41.343025,
-    "lon": -72.1290542,
-    "approx": true
-  },
   "809 Enfield Street": {
     "lat": 42.0003593,
     "lon": -72.5935419,
@@ -205,8 +85,8 @@
     "approx": false
   },
   "371 Cottage Grove Road": {
-    "lat": 41.8174967,
-    "lon": -72.7196168,
+    "lat": 41.818109,
+    "lon": -72.716257,
     "approx": false
   },
   "8 Herman Drive": {
@@ -220,8 +100,8 @@
     "approx": false
   },
   "1361 Farmington Avenue": {
-    "lat": 41.6250288,
-    "lon": -72.7505369,
+    "lat": 41.7506079,
+    "lon": -72.7740795,
     "approx": false
   },
   "146 Brickyard Road": {
@@ -260,8 +140,8 @@
     "approx": false
   },
   "65 Freshwater Boulevard": {
-    "lat": 41.9925537,
-    "lon": -72.5766455,
+    "lat": 41.996702,
+    "lon": -72.578093,
     "approx": false
   },
   "8 Bridge Street": {
@@ -480,8 +360,8 @@
     "approx": false
   },
   "451 Main Street": {
-    "lat": 41.2829491,
-    "lon": -72.877373,
+    "lat": 41.270911,
+    "lon": -72.9540467,
     "approx": false
   },
   "101 Monroe Turnpike": {
@@ -495,8 +375,8 @@
     "approx": false
   },
   "609 Main Street": {
-    "lat": 41.6253452,
-    "lon": -72.6530829,
+    "lat": 41.6569876,
+    "lon": -72.6046659,
     "approx": false
   },
   "110 Thomaston Avenue": {
@@ -515,8 +395,8 @@
     "approx": false
   },
   "789 Main Street": {
-    "lat": 41.8239671,
-    "lon": -72.6216023,
+    "lat": 41.7661264,
+    "lon": -72.6735111,
     "approx": false
   },
   "600 Straits Turnpike": {
@@ -535,8 +415,8 @@
     "approx": false
   },
   "164 Federal Road": {
-    "lat": 41.412334,
-    "lon": -73.4257391,
+    "lat": 41.4400468,
+    "lon": -73.4065773,
     "approx": false
   },
   "31 Mill Plain Road": {
@@ -550,9 +430,9 @@
     "approx": false
   },
   "182 Main Street": {
-    "lat": 41.146763,
-    "lon": -73.4948446,
-    "approx": true
+    "lat": 41.2742061,
+    "lon": -72.9436961,
+    "approx": false
   },
   "87 New Canaan Avenue": {
     "lat": 41.1267938,
@@ -730,8 +610,8 @@
     "approx": false
   },
   "4 Lanesville Road": {
-    "lat": 41.5352499,
-    "lon": -73.422344,
+    "lat": 41.5374924,
+    "lon": -73.4174751,
     "approx": false
   },
   "2 Business Parkway": {
@@ -800,8 +680,8 @@
     "approx": false
   },
   "392 East Street": {
-    "lat": 41.310214,
-    "lon": -72.909764,
+    "lat": 41.310471,
+    "lon": -72.9097216,
     "approx": false
   },
   "100 North Main Street": {
@@ -865,8 +745,8 @@
     "approx": false
   },
   "475 River Rd": {
-    "lat": 41.4383685,
-    "lon": -72.9099757,
+    "lat": 41.289089,
+    "lon": -73.0783537,
     "approx": false
   },
   "124 W Stafford St": {
@@ -895,8 +775,8 @@
     "approx": false
   },
   "1050 Main Street": {
-    "lat": 41.6715795,
-    "lon": -72.6004528,
+    "lat": 41.6973889,
+    "lon": -72.7231105,
     "approx": false
   },
   "25 Mihaliak Road": {
@@ -1000,8 +880,8 @@
     "approx": false
   },
   "2897 Berlin Turnpike": {
-    "lat": 41.6705866,
-    "lon": -72.7175901,
+    "lat": 41.6698088,
+    "lon": -72.7175735,
     "approx": false
   },
   "1429 E Putnam Ave": {
@@ -1090,8 +970,8 @@
     "approx": false
   },
   "16 Providence Pike": {
-    "lat": 41.9250747,
-    "lon": -71.8812815,
+    "lat": 41.9251063,
+    "lon": -71.8812021,
     "approx": false
   },
   "651 Windsor St": {
@@ -1155,8 +1035,8 @@
     "approx": false
   },
   "485 Ella Grasso Blvd": {
-    "lat": 41.6926057,
-    "lon": -72.7704038,
+    "lat": 41.6987207,
+    "lon": -72.7595446,
     "approx": false
   },
   "2260 State St": {
@@ -1190,8 +1070,8 @@
     "approx": false
   },
   "1056 New Britain Ave": {
-    "lat": 41.7307826,
-    "lon": -72.7262909,
+    "lat": 41.6479155,
+    "lon": -72.7125183,
     "approx": false
   },
   "505 N Main St": {
@@ -1220,13 +1100,13 @@
     "approx": false
   },
   "74 Woodlawn Rd, Berlin, CT, 06037": {
-    "lat": 41.6323624,
-    "lon": -72.7408203,
+    "lat": 41.6323334,
+    "lon": -72.7410503,
     "approx": false
   },
   "15 Southwood Drive, Bloomfield, CT, 06002": {
-    "lat": 41.850194,
-    "lon": -72.708281,
+    "lat": 41.8523302,
+    "lon": -72.7076789,
     "approx": false
   },
   "1780 Stratford Ave, Bridgeport, CT, 06607": {
@@ -1370,8 +1250,8 @@
     "approx": false
   },
   "925 Foxon Road, East Haven, CT, 06513": {
-    "lat": 41.3220607,
-    "lon": -72.8529699,
+    "lat": 41.321155,
+    "lon": -72.863952,
     "approx": false
   },
   "299 Chapel St, Fair Haven, CT, 06513": {
@@ -1425,8 +1305,8 @@
     "approx": false
   },
   "2300 Dixwell Ave, Hamden, CT, 06514": {
-    "lat": 41.3736492,
-    "lon": -72.9190073,
+    "lat": 41.3739316,
+    "lon": -72.9184196,
     "approx": false
   },
   "379 Welton St, Hamden, CT, 06517": {
@@ -1575,8 +1455,8 @@
     "approx": false
   },
   "16 Danbury Rd, New Milford, CT, 06776": {
-    "lat": 41.5730746,
-    "lon": -73.4160527,
+    "lat": 41.5550239,
+    "lon": -73.4162795,
     "approx": false
   },
   "26 Bridge St, New Milford, CT, 06776": {
@@ -1605,8 +1485,8 @@
     "approx": false
   },
   "219 Main St., Norwalk, CT, 06851": {
-    "lat": 41.1296247,
-    "lon": -73.422943,
+    "lat": 41.1294187,
+    "lon": -73.4228368,
     "approx": false
   },
   "554 Main St, Oakville, CT, 06779": {
@@ -1655,8 +1535,8 @@
     "approx": false
   },
   "89 Wolcott Road, Simsbury, CT, 06070": {
-    "lat": 41.9166742,
-    "lon": -72.7794911,
+    "lat": 41.9170519,
+    "lon": -72.7790972,
     "approx": false
   },
   "1206 Queen St, Southington, CT, 06489": {
@@ -1700,8 +1580,8 @@
     "approx": false
   },
   "747 East Main Street, Stamford, CT, 06902": {
-    "lat": 41.0553382,
-    "lon": -73.5308728,
+    "lat": 41.0554108,
+    "lon": -73.5302069,
     "approx": false
   },
   "198 Baxter Ave, Stamford, CT, 06902": {
@@ -1745,8 +1625,8 @@
     "approx": false
   },
   "370A Hartford Tpke, Vernon, CT, 06066": {
-    "lat": 41.8316849,
-    "lon": -72.4752523,
+    "lat": 41.8376836,
+    "lon": -72.4666682,
     "approx": false
   },
   "1012 New Britain Ave, W Hartford, CT, 06110": {
@@ -1760,8 +1640,8 @@
     "approx": false
   },
   "110 Pent Highway, Wallingford, CT, 06492": {
-    "lat": 41.4815789,
-    "lon": -72.816407,
+    "lat": 41.4815423,
+    "lon": -72.8161706,
     "approx": false
   },
   "848 S Colony Rd, Wallingford, CT, 06492": {
@@ -1785,13 +1665,13 @@
     "approx": false
   },
   "1012 New Britain Ave, West Hartford, CT, 06110": {
-    "lat": 41.7301661,
-    "lon": -72.7228144,
+    "lat": 41.7309775,
+    "lon": -72.7173046,
     "approx": false
   },
   "595 Prospect Avenue, West Hartford, CT, 06105": {
-    "lat": 41.7654107,
-    "lon": -72.716225,
+    "lat": 41.7653598,
+    "lon": -72.7162161,
     "approx": false
   },
   "449 Derby Ave, West Haven, CT, 06516": {
@@ -1829,14 +1709,134 @@
     "lon": -72.9915869,
     "approx": false
   },
+  "95 Vincent P. Kelly Road": {
+    "lat": 41.6570062,
+    "lon": -72.9193014,
+    "approx": false
+  },
+  "600 Lindley Street": {
+    "lat": 41.198782,
+    "lon": -73.196763,
+    "approx": false
+  },
+  "90 Sargent Drive": {
+    "lat": 41.2890863,
+    "lon": -72.9253491,
+    "approx": false
+  },
+  "474 West Main Street": {
+    "lat": 41.048183,
+    "lon": -73.5576324,
+    "approx": false
+  },
+  "710 Sherman Pkwy": {
+    "lat": 41.3300348,
+    "lon": -72.9385051,
+    "approx": false
+  },
+  "200 Bloomfield Avenue": {
+    "lat": 41.799161,
+    "lon": -72.7137661,
+    "approx": false
+  },
+  "60 Marsh Hill Road": {
+    "lat": 41.2491168,
+    "lon": -73.0028823,
+    "approx": false
+  },
+  "140 Pond Lily Avenue": {
+    "lat": 41.341117,
+    "lon": -72.9723585,
+    "approx": false
+  },
+  "171 Salem Turnpike": {
+    "lat": 41.5135837,
+    "lon": -72.1202159,
+    "approx": false
+  },
+  "60 State Street, Rear": {
+    "lat": 41.7187483,
+    "lon": -72.6559379,
+    "approx": false
+  },
+  "526 Huntington Avenue": {
+    "lat": 41.2849344,
+    "lon": -72.8900117,
+    "approx": false
+  },
+  "76 Meadow Street": {
+    "lat": 41.7609847,
+    "lon": -72.6556563,
+    "approx": false
+  },
+  "47 Mill Hill Rd": {
+    "lat": 41.5780454,
+    "lon": -72.3622683,
+    "approx": false
+  },
+  "100 Washington St": {
+    "lat": 41.7598059,
+    "lon": -72.6816949,
+    "approx": false
+  },
+  "360 Bridgeport Ave": {
+    "lat": 41.2963008,
+    "lon": -73.1069042,
+    "approx": false
+  },
+  "4 Meadow St": {
+    "lat": 41.6516897,
+    "lon": -72.737197,
+    "approx": false
+  },
+  "1175 Woodend Rd": {
+    "lat": 41.1696821,
+    "lon": -73.1442712,
+    "approx": false
+  },
+  "72 Sandpit Rd": {
+    "lat": 41.394817,
+    "lon": -73.4540111,
+    "approx": true
+  },
+  "555 Lakewiid Rd": {
+    "lat": 41.5541144,
+    "lon": -73.0435615,
+    "approx": true
+  },
+  "1441 N Colony Rd": {
+    "lat": 41.5707596,
+    "lon": -72.7747677,
+    "approx": false
+  },
+  "4 Hamilton St": {
+    "lat": 41.2984666,
+    "lon": -72.9141303,
+    "approx": false
+  },
+  "1629 King St": {
+    "lat": 41.9470761,
+    "lon": -72.6015238,
+    "approx": false
+  },
+  "134 Club Rd": {
+    "lat": 41.7230978,
+    "lon": -72.1843298,
+    "approx": false
+  },
+  "578 Vauxhall St Ext": {
+    "lat": 41.343025,
+    "lon": -72.1290542,
+    "approx": true
+  },
   "2 Industrial Plaza Road, Danbury, CT, 06810": {
     "lat": 41.410119,
     "lon": -73.410957,
     "approx": false
   },
   "61 Buckley Highway, Stafford Springs, CT, 06076": {
-    "lat": 41.9562896,
-    "lon": -72.2824564,
+    "lat": 41.9562568,
+    "lon": -72.2823627,
     "approx": false
   },
   "33 Bradley Park Road, East Granby, CT, 06026": {
@@ -1895,8 +1895,8 @@
     "approx": false
   },
   "284 Whalley Avenue, New Haven, CT, 06511": {
-    "lat": 41.3157643,
-    "lon": -72.9400667,
+    "lat": 41.316309,
+    "lon": -72.941596,
     "approx": false
   },
   "402 Main Street, East Haven, CT, 06512": {
@@ -1990,8 +1990,8 @@
     "approx": false
   },
   "1217 Queen Street, Southington, CT, 06489": {
-    "lat": 41.6489822,
-    "lon": -72.8713056,
+    "lat": 41.6492716,
+    "lon": -72.8711619,
     "approx": false
   },
   "534 Broad Street, Bristol, CT, 06010": {
@@ -2075,8 +2075,8 @@
     "approx": false
   },
   "558 Riverside Ave, Westport, CT, 06880": {
-    "lat": 41.1337549,
-    "lon": -73.3656602,
+    "lat": 41.1251714,
+    "lon": -73.3719422,
     "approx": false
   },
   "83 Federal Road, Brookfield, CT, 06804": {
@@ -2200,8 +2200,8 @@
     "approx": false
   },
   "33 Rose Street, Danbury, CT, 06810": {
-    "lat": 41.39783,
-    "lon": -73.4598238,
+    "lat": 41.397281,
+    "lon": -73.4603967,
     "approx": false
   },
   "1350 Post Road, Darien, CT, 06820": {
@@ -2320,8 +2320,8 @@
     "approx": true
   },
   "61 Buckley Highway, Stafford Springs, CT, 06084": {
-    "lat": 41.9562568,
-    "lon": -72.2823627,
+    "lat": 41.9562896,
+    "lon": -72.2824564,
     "approx": false
   },
   "166 Whiting Street, Guilford, CT, 06062": {
@@ -2550,8 +2550,8 @@
     "approx": false
   },
   "472 Main St, Ansonia, CT, 06401": {
-    "lat": 41.3377208,
-    "lon": -73.0771077,
+    "lat": 41.339576,
+    "lon": -73.0783253,
     "approx": false
   },
   "658 Berlin Turnpike, Berlin, CT, 06037": {
@@ -2595,8 +2595,8 @@
     "approx": false
   },
   "760 Wolcott St, Waterbury, CT, 06705": {
-    "lat": 41.5628733,
-    "lon": -73.01014,
+    "lat": 41.5628513,
+    "lon": -73.0101545,
     "approx": false
   },
   "1012 New Britain Avenue, West Hartford, CT, 06110": {
@@ -2685,18 +2685,18 @@
     "approx": false
   },
   "789 Foxon Road, East Haven, CT, 06512": {
-    "lat": 41.3222861,
-    "lon": -72.8574763,
+    "lat": 41.3222814,
+    "lon": -72.8574825,
     "approx": false
   },
   "984 Main Street (Route 63), Watertown, CT, 06795": {
-    "lat": 41.5966243,
-    "lon": -73.1132501,
+    "lat": 41.5955953,
+    "lon": -73.1118756,
     "approx": false
   },
   "317 North Frontage Road, New London, CT, 06320": {
-    "lat": 41.3678043,
-    "lon": -72.1118953,
+    "lat": 41.3677459,
+    "lon": -72.1117314,
     "approx": false
   },
   "774 Rubber Avenue, Naugatuck, CT, 06770": {
@@ -2740,8 +2740,8 @@
     "approx": false
   },
   "211 Albany Turnpike, PO Box 448, Canton, CT, 06019": {
-    "lat": 41.8262093,
-    "lon": -72.8972242,
+    "lat": 41.8262494,
+    "lon": -72.897307,
     "approx": false
   },
   "26A Newtown Road (Rte 6), Danbury, CT, 06810": {
@@ -2770,13 +2770,13 @@
     "approx": true
   },
   "969 Killingworth Road, Higganum, CT, 06441": {
-    "lat": 41.4956448,
-    "lon": -72.5584437,
+    "lat": 41.4832442,
+    "lon": -72.5567214,
     "approx": false
   },
   "467 Colman Street, New London, CT, 06320": {
-    "lat": 41.3626015,
-    "lon": -72.1160636,
+    "lat": 41.362756,
+    "lon": -72.1160719,
     "approx": false
   },
   "531 Tunxis Hill Road, Fairfield, CT, 06825": {
@@ -2855,8 +2855,8 @@
     "approx": false
   },
   "16 Danbury Road, New Milford, CT, 06776": {
-    "lat": 41.5730746,
-    "lon": -73.4160527,
+    "lat": 41.5550239,
+    "lon": -73.4162795,
     "approx": false
   },
   "404 Boston Post Rd, Orange, CT, 06477": {
@@ -3050,8 +3050,8 @@
     "approx": false
   },
   "2695 State Street, Hamden, CT, 06517": {
-    "lat": 41.3547877,
-    "lon": -72.8909853,
+    "lat": 41.354779,
+    "lon": -72.8909879,
     "approx": false
   },
   "105 Pane Rd, Newington, CT, 06111": {
@@ -3235,8 +3235,8 @@
     "approx": false
   },
   "377 Main Avenue, Norwalk, CT, 06851": {
-    "lat": 41.149851,
-    "lon": -73.425696,
+    "lat": 41.1404276,
+    "lon": -73.4262879,
     "approx": false
   },
   "1177 Boston Post Rd, West Haven, CT, 06516": {
@@ -3265,8 +3265,8 @@
     "approx": false
   },
   "1040 Wolcott Street, Waterbury, CT, 06705": {
-    "lat": 41.5695446,
-    "lon": -73.0056868,
+    "lat": 41.5693916,
+    "lon": -73.0058017,
     "approx": false
   },
   "325 Broad Street, Manchester, CT, 06040": {
