@@ -1,0 +1,26 @@
+Layer,Station Name,Address,City,State,Zip,County,Service Type,Status,Test Center ID / Station ID,Dealer # / DNR License,Phone,Email,Contact Name,Signed Contract (Y/N),Date of Install,Comments
+Fleet,City of Bristol DPW,95 Vincent P. Kelly Road,Bristol,CT,06010,Hartford,Fleet,Active,FL0001001,,(860) 584-7792,jamesdivirgilio@bristolct.gov; parts@bristolct.gov,"Jim D, John",Y,,"Date Called: 4/29 | Date/Caller: AD 6/8, GF 10/5 | Install ID: CTF38369"
+Fleet,Aquarion Water Company,600 Lindley Street,Bridgeport,CT,06610,Fairfield,Fleet,Active,FL0001002,,(203) 395-3212,mrosso@aquarionwater.com,,Y,,Date Called: 4/29 | Date/Caller: AD 6/8 | Install ID: CTF38411
+Fleet,Regional Water Authority,90 Sargent Drive,New Haven,CT,06511,New Haven,Fleet,Active,FL0001003,,(203) 401-2579,acox@rwater.com,Adam Cox/ Mgr,Y,,"Date Called: 4/29 | Station Visit Date: 13-May | Opus FSR: GF | Date/Caller: AD 6/8, GF 10/5 | Install ID: CTF38408"
+Fleet,Hunter Ambulance Service,474 West Main Street,Meriden,CT,06451,New Haven,Fleet,Active,FL0001006,,(203) 514-5152,bobcr@huntersamb.com,Bob/Service Mgr,Y,,Date Called: 4/29 | Date/Caller: AD 6/8 | Install ID: CTF38370
+Fleet,New Haven Police Department,710 Sherman Pkwy,New Haven,CT,06511,New Haven,Fleet,Active,FL0001007,,(203) 946-6323,thatch@newhavenct.gov,Tim Hatch,Y,,"Date Called: 4/29 | Station Visit Date: 13-May | Opus FSR: GF | Date/Caller: AD 6/8, GF 10/5 | Install ID: CTF38363"
+Fleet,University of Hartford,200 Bloomfield Avenue,West Hartford,CT,06117,Hartford,Fleet,Active,FL0001011,,(860) 768-7816,beaumont@hartford.edu,,Y,,"Date Called: 4/29 | Date/Caller: AD 6/8, GF 10/5 | Install ID: CTF38394"
+Fleet,Southern CT Gas Company,60 Marsh Hill Road,Orange,CT,06477,New Haven,Fleet,,FL0001013,,(203) 795-7863,Mnye@UInet.com,"Michael Nye 
+203-795-7891",Y,,"Date Called: Vol 1,000 | Date/Caller: 9/27 - GF | Install ID: CTF38364"
+Fleet,State of Connecticut - DAS,140 Pond Lily Avenue,New Haven,CT,06515,New Haven,Fleet,Active,FL0001014,,(203) 397-4590,newhaven.fleet@ct.gov,Al Landry / Ronald Johnson,Y,,Install ID: CTF38373
+Fleet,State of Connecticut - DAS,171 Salem Turnpike,Norwich,CT,06360,New London,Fleet,Active,FL0001015,,(860) 885-2153,norwich.fleet@ct.gov,James Caramante,Y,,Install ID: CTF38377
+Fleet,State of Connecticut - DAS,"60 State Street, Rear",Wethersfield,CT,06109,Hartford,Fleet,Active,FL0001016,,8605290500,wethersfield.fleet@ct.gov,Dave March or Steve Phillips,Y,,Install ID: CTF37449
+Fleet,City of Waterbury,526 Huntington Avenue,Waterbury,CT,06708,New Haven,Fleet,Active,FL0001017,,2035746965,pmulvehill@waterburyct.org,Pat Mulvehill,Y,,Opus FSR: GF | Install ID: CTF38361
+Fleet,CNG Corp,76 Meadow Street,East Hartford,CT,06108,Hartford,Fleet,Active,FL0001018,,8607273028,dhite@avangrid.com,,Y,,Install ID: CTF38412
+Fleet,DAS Garage - Dept of Emergency Svcs & Public Protection,47 Mill Hill Rd,Colchester,CT,06415,New London,Fleet,Active,FL0001033,,8604565800 x125         (cell) 8602506812,John.Mohrlein@ct.gov,John Mohrlein - Fleet Maint Spvr,Y,,Date Called: 10/7 | Install ID: CTF38378
+Fleet,DAS Garage - Dept of Emergency Svcs & Public Protection  (Troop H),100 Washington St,Hartford,CT,06106,Hartford,Fleet,Active,FL0001034,,8604565800 x125         (cell) 8602506812,John.Mohrlein@ct.gov,John Mohrlein - Fleet Maint Spvr,Y,,Date Called: 10/7 | Install ID: CTF37533
+Fleet,Frontier- Shelton,360 Bridgeport Ave,Shelton,CT,06484,Fairfield,,,FL0001035,,(203) 206-3323,Jeffrey.j.miller@ftr.com,Jeffrey Miller,Y,,Install ID: CTF38365
+Fleet,Frontier - Norwalk,4 Meadow St,Norwalk,CT,06851,Fairfield,,,FL0001036,,(203) 206-3323,Jeffrey.j.miller@ftr.com,Jeffrey Miller,Y,,Install ID: CTF38395
+Fleet,Frontier - Stratford,1175 Woodend Rd,Stratford,CT,06497,Fairfield,,,FL0001037,,(203) 206-3323,Jeffrey.j.miller@ftr.com,Jeffrey Miller,Y,,Install ID: CTF37453
+Fleet,Frontier - Danbury,72 Sandpit Rd,Danbury,CT,06810,Fairfield,,,FL0001038,,(203) 206-3323,Jeffrey.j.miller@ftr.com,Jeffrey Miller,Y,,Install ID: CTF38360
+Fleet,Frontier - Waterbury,555 Lakewiid Rd,Waterbury,CT,06704,New Haven,,,FL0001039,,(203) 206-3323,Jeffrey.j.miller@ftr.com,Jeffrey Miller,Y,,Install ID: CTF38415
+Fleet,Frontier - Meriden,1441 N Colony Rd,Meriden,CT,06450,New Haven,,,FL0001040,,(203) 206-3323,Jeffrey.j.miller@ftr.com,Jeffrey Miller,Y,,Install ID: CTF37647
+Fleet,Frontier - New Haven,4 Hamilton St,New Haven,CT,06511,New Haven,,,FL0001041,,(203) 215-9093,Denny.kosovic@ftr.com�,Denny Kosovic,Y,,Install ID: CTF37541
+Fleet,Frontier - Enfield,1629 King St,Enfield,CT,06082,Hartford,,,FL0001042,,(203) 215-9093,Denny.kosovic@ftr.com�,Denny Kosovic,Y,,Install ID: CTF38418
+Fleet,Frontier - N Windham,134 Club Rd,N Windham,CT,06256,Windham,,,FL0001043,,(203) 215-9093,Denny.kosovic@ftr.com�,Denny Kosovic,Y,,Install ID: CTF37543
+Fleet,Frontier - Waterford,578 Vauxhall St Ext,Waterford,CT,06385,New London,,,FL0001044,,(203) 215-9093,Denny.kosovic@ftr.com�,Denny Kosovic,Y,,Install ID: CTF38366
