@@ -341,13 +341,25 @@ function updateProgress() {
       : ` &nbsp;|&nbsp; Failed: 0`);
 }
 
+// Spreadsheet tools (Excel/Sheets) treat CT zip codes as numbers and
+// silently drop the leading zero (06810 -> 6810). Every CT zip is 5
+// digits starting with 0, so pad anything shorter back out for display
+// - this never touches the underlying data used for geocoding lookups,
+// only what's shown on screen.
+function padZip(z) {
+  if (!z) return z;
+  const digits = String(z).trim();
+  return /^\d{1,4}$/.test(digits) ? digits.padStart(5, '0') : digits;
+}
+
 function makePopupHtml(s, approx) {
   const esc = (str) => (str || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   // Address shown here is always the DMV/license address plus city and
   // state - never the GEO Address override, which exists only to help
   // the geocoder find the pin and is never meant to be displayed.
   const cityState = [s.city, s.state].filter(Boolean).join(', ');
-  const fullAddress = [s.address, cityState].filter(Boolean).join(', ') + (s.zip ? ' ' + s.zip : '');
+  const zipDisplay = padZip(s.zip);
+  const fullAddress = [s.address, cityState].filter(Boolean).join(', ') + (zipDisplay ? ' ' + zipDisplay : '');
   return `
     <div style="max-width:280px;">
       <strong>${esc(s.name)}</strong><br>
