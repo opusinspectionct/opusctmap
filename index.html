@@ -323,7 +323,9 @@ const stationsSummary = document.getElementById('stations-summary');
 
 let geocoded = 0;
 let failed = 0;
+let approxCount = 0;
 const failedStations = [];
+const approxStations = [];
 const total = STATIONS.length;
 
 function updateProgress() {
@@ -400,6 +402,13 @@ function placeStation(station) {
   if (entry) {
     placeMarker(station, entry.lat, entry.lon, !!entry.approx);
     geocoded++;
+    if (entry.approx) {
+      // Found *a* location, but only via a looser fallback search, not
+      // the exact address - flag it as a problem address too, alongside
+      // the ones that failed to place at all.
+      approxCount++;
+      approxStations.push(station);
+    }
   } else {
     // Not in coordinates.json yet - most likely a station added since
     // the last time geocode_stations.py was run. Re-run that script
@@ -413,25 +422,33 @@ function placeStation(station) {
 function showProblemAddresses() {
   const summary = document.getElementById('problem-summary');
   const list = document.getElementById('problem-list');
-  if (failedStations.length === 0) {
+
+  // "Problem addresses" = anything that didn't plot at all, PLUS
+  // anything that only plotted via an approximate/fallback match -
+  // both need the same fix (a cleaner GEO Address + a re-run).
+  const combined = [
+    ...failedStations.map(s => ({ s, reason: 'not located' })),
+    ...approxStations.map(s => ({ s, reason: 'approximate' })),
+  ];
+
+  if (combined.length === 0) {
     summary.style.display = 'none';
     list.style.display = 'none';
     return;
   }
 
-  const sorted = failedStations.slice().sort((a, b) =>
-    (a.name || '').localeCompare(b.name || '')
-  );
+  combined.sort((a, b) => (a.s.name || '').localeCompare(b.s.name || ''));
 
   const esc = (str) => (str || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-  summary.innerHTML = `&#9888; ${sorted.length} problem address${sorted.length === 1 ? '' : 'es'} <span class="arrow">&#9660;</span>`;
+  summary.innerHTML = `&#9888; ${combined.length} problem address${combined.length === 1 ? '' : 'es'} <span class="arrow">&#9660;</span>`;
   summary.style.display = 'block';
 
   list.innerHTML = '';
-  sorted.forEach(s => {
+  combined.forEach(({ s, reason }) => {
+    const tag = reason === 'not located' ? 'not located' : 'approximate';
     const li = document.createElement('li');
-    li.innerHTML = `<strong>${esc(s.name)}</strong> <span class="addr">(${esc(s.layer)})</span><br><span class="addr">${esc(s.address)}</span>`;
+    li.innerHTML = `<strong>${esc(s.name)}</strong> <span class="addr">(${esc(s.layer)} &ndash; ${tag})</span><br><span class="addr">${esc(s.address)}</span>`;
     list.appendChild(li);
   });
 
