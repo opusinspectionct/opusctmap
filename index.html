@@ -343,16 +343,25 @@ function updateProgress() {
 
 function makePopupHtml(s, approx) {
   const esc = (str) => (str || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  // Address shown here is always the DMV/license address plus city and
+  // state - never the GEO Address override, which exists only to help
+  // the geocoder find the pin and is never meant to be displayed.
+  const cityState = [s.city, s.state].filter(Boolean).join(', ');
+  const fullAddress = [s.address, cityState].filter(Boolean).join(', ') + (s.zip ? ' ' + s.zip : '');
   return `
-    <div style="max-width:260px;">
+    <div style="max-width:280px;">
       <strong>${esc(s.name)}</strong><br>
-      ${esc(s.address)}<br>
+      ${esc(fullAddress)}<br>
       <em>${esc(s.layer)}</em>${s.service ? ' &middot; ' + esc(s.service) : ''}<br>
       ${approx ? '<span style="color:#b45309;">&#9888; Approximate location (exact address not found)</span><br>' : ''}
       ${s.status ? '<b>Status:</b> ' + esc(s.status) + '<br>' : ''}
-      ${s.id ? '<b>ID:</b> ' + esc(s.id) + '<br>' : ''}
+      ${s.id ? '<b>Test Center/Station ID:</b> ' + esc(s.id) + '<br>' : ''}
+      ${s.dnr ? '<b>Dealer #/DNR:</b> ' + esc(s.dnr) + '<br>' : ''}
       ${s.phone ? '<b>Phone:</b> ' + esc(s.phone) + '<br>' : ''}
       ${s.email ? '<b>Email:</b> ' + esc(s.email) + '<br>' : ''}
+      ${s.contact ? '<b>Contact:</b> ' + esc(s.contact) + '<br>' : ''}
+      ${s.signedContract ? '<b>Signed Contract:</b> ' + esc(s.signedContract) + '<br>' : ''}
+      ${s.dateInstall ? '<b>Date of Install:</b> ' + esc(s.dateInstall) + '<br>' : ''}
       ${s.comments ? '<div style="margin-top:4px;color:#555;font-size:12px;">' + esc(s.comments) + '</div>' : ''}
     </div>
   `;
