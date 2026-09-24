@@ -63,11 +63,50 @@
     float: right; cursor: pointer; font-size: 18px; color: #888; margin-left: 10px;
   }
   #help-modal ul { padding-left: 18px; margin: 8px 0; }
+
+  /* ---- Station search (top-left, opposite the layer key) ---- */
+  #search-box { position: absolute; top: 10px; left: 10px; z-index: 1000; display: none; }
+  #search-box-panel {
+    background: white; padding: 12px 14px; border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3); width: 260px; font-size: 13px;
+  }
+  #search-box-panel h4 { margin: 0 0 8px 0; font-size: 14px; }
+  #station-search-input {
+    width: 100%; box-sizing: border-box; padding: 6px 8px; font-size: 13px;
+    border: 1px solid #ccc; border-radius: 6px;
+  }
+  #search-results { margin-top: 6px; max-height: 220px; overflow-y: auto; }
+  #search-results .result-item {
+    padding: 6px 4px; border-bottom: 1px solid #eee; cursor: pointer; font-size: 12px;
+  }
+  #search-results .result-item:hover { background: #f0f4ff; }
+  #search-results .result-item .r-name { font-weight: bold; }
+  #search-results .result-item .r-meta { color: #777; font-size: 11px; }
+  #search-results .no-results, #search-results .hint { color: #999; font-size: 12px; padding: 4px 2px; }
+  #search-minimize {
+    width: 100%; margin-top: 8px; padding: 5px; border-radius: 6px;
+    border: 1px solid #ccc; background: #f5f5f5; cursor: pointer; font-size: 11px;
+  }
+  #search-icon-btn {
+    display: none; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 50%; border: none;
+    background: rgba(255,255,255,0.55); box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    font-size: 20px; cursor: pointer; color: #333; backdrop-filter: blur(2px);
+  }
 </style>
 </head>
 <body>
 
 <div id="map"></div>
+<div id="search-box">
+  <div id="search-box-panel">
+    <h4>Find a Station</h4>
+    <input type="text" id="station-search-input" placeholder="Name, station #, or town...">
+    <div id="search-results"><div class="hint">Start typing to search</div></div>
+    <button id="search-minimize">&#9650; Minimize</button>
+  </div>
+  <button id="search-icon-btn" title="Search stations">&#128269;</button>
+</div>
 <div id="progress-wrap">
   <div id="progress-label">Starting geocoding...</div>
   <div id="progress-bar-bg"><div id="progress-bar-fill"></div></div>
@@ -360,24 +399,53 @@ function makePopupHtml(s, approx) {
   const cityState = [s.city, s.state].filter(Boolean).join(', ');
   const zipDisplay = padZip(s.zip);
   const fullAddress = [s.address, cityState].filter(Boolean).join(', ') + (zipDisplay ? ' ' + zipDisplay : '');
+  // The name/address header always stays visible; everything else lives
+  // in .popup-body, which the mini/maxi button (wired up on popupopen,
+  // below) show/hides in place without closing the popup.
   return `
-    <div style="max-width:280px;">
-      <strong>${esc(s.name)}</strong><br>
-      ${esc(fullAddress)}<br>
-      <em>${esc(s.layer)}</em>${s.service ? ' &middot; ' + esc(s.service) : ''}<br>
-      ${approx ? '<span style="color:#b45309;">&#9888; Approximate location (exact address not found)</span><br>' : ''}
-      ${s.status ? '<b>Status:</b> ' + esc(s.status) + '<br>' : ''}
-      ${s.id ? '<b>Test Center/Station ID:</b> ' + esc(s.id) + '<br>' : ''}
-      ${s.dnr ? '<b>Dealer #/DNR:</b> ' + esc(s.dnr) + '<br>' : ''}
-      ${s.phone ? '<b>Phone:</b> ' + esc(s.phone) + '<br>' : ''}
-      ${s.email ? '<b>Email:</b> ' + esc(s.email) + '<br>' : ''}
-      ${s.contact ? '<b>Contact:</b> ' + esc(s.contact) + '<br>' : ''}
-      ${s.signedContract ? '<b>Signed Contract:</b> ' + esc(s.signedContract) + '<br>' : ''}
-      ${s.dateInstall ? '<b>Date of Install:</b> ' + esc(s.dateInstall) + '<br>' : ''}
-      ${s.comments ? '<div style="margin-top:4px;color:#555;font-size:12px;">' + esc(s.comments) + '</div>' : ''}
+    <div class="popup-card" style="max-width:280px;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:6px;">
+        <div><strong>${esc(s.name)}</strong><br>${esc(fullAddress)}</div>
+        <button class="popup-toggle-btn" title="Minimize/maximize details" type="button"
+          style="border:1px solid #ccc; background:#f5f5f5; border-radius:4px; cursor:pointer; font-size:11px; padding:2px 6px; flex-shrink:0;">&#9662;</button>
+      </div>
+      <div class="popup-body" style="margin-top:6px;">
+        <em>${esc(s.layer)}</em>${s.service ? ' &middot; ' + esc(s.service) : ''}<br>
+        ${approx ? '<span style="color:#b45309;">&#9888; Approximate location (exact address not found)</span><br>' : ''}
+        ${s.status ? '<b>Status:</b> ' + esc(s.status) + '<br>' : ''}
+        ${s.id ? '<b>Test Center/Station ID:</b> ' + esc(s.id) + '<br>' : ''}
+        ${s.dnr ? '<b>Dealer #/DNR:</b> ' + esc(s.dnr) + '<br>' : ''}
+        ${s.phone ? '<b>Phone:</b> ' + esc(s.phone) + '<br>' : ''}
+        ${s.email ? '<b>Email:</b> ' + esc(s.email) + '<br>' : ''}
+        ${s.contact ? '<b>Contact:</b> ' + esc(s.contact) + '<br>' : ''}
+        ${s.signedContract ? '<b>Signed Contract:</b> ' + esc(s.signedContract) + '<br>' : ''}
+        ${s.dateInstall ? '<b>Date of Install:</b> ' + esc(s.dateInstall) + '<br>' : ''}
+        ${s.comments ? '<div style="margin-top:4px;color:#555;font-size:12px;">' + esc(s.comments) + '</div>' : ''}
+      </div>
     </div>
   `;
 }
+
+// Wire up the popup's mini/maxi button whenever a popup opens (bindPopup's
+// HTML is static, so this is done once per open via event delegation
+// rather than inline onclick). Collapsing hides everything except the
+// name/address header; map.on(...) + popup.update() keeps the popup's
+// own box resized to match, since Leaflet doesn't do that automatically
+// when content inside it changes.
+map.on('popupopen', (e) => {
+  const el = e.popup.getElement();
+  if (!el) return;
+  const btn = el.querySelector('.popup-toggle-btn');
+  const body = el.querySelector('.popup-body');
+  if (!btn || !body || btn._wired) return;
+  btn._wired = true;
+  btn.addEventListener('click', () => {
+    const collapsing = body.style.display !== 'none';
+    body.style.display = collapsing ? 'none' : 'block';
+    btn.innerHTML = collapsing ? '&#9656;' : '&#9662;';
+    e.popup.update();
+  });
+});
 
 function placeMarker(station, lat, lon, approx) {
   const color = LAYER_COLORS[station.layer] || "#555";
@@ -394,6 +462,10 @@ function placeMarker(station, lat, lon, approx) {
   if (group) {
     marker.addTo(group);
   }
+  // Keep a handle on the marker + its coordinates so the search box can
+  // fly to it and pop it open directly, without re-deriving lat/lon.
+  station._marker = marker;
+  station._latlng = [lat, lon];
 }
 
 // PRECOMPUTED COORDINATES
@@ -483,6 +555,77 @@ function showProblemAddresses() {
   });
 }
 
+// ---- Station search box (top-left, opposite the layer key) ----
+// Matches on station name, station/test-center ID, and town - partial,
+// case-insensitive. Clicking a result flies the map to that pin and
+// opens its popup; a station that never got a pin (see the red
+// "problem addresses" list) just gets a plain heads-up instead.
+function searchEsc(str) {
+  return (str || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function buildSearchIndex() {
+  return STATIONS.map((s) => ({
+    station: s,
+    haystack: [s.name, s.id, s.city, s.layer].filter(Boolean).join(' ').toLowerCase(),
+  }));
+}
+let SEARCH_INDEX = [];
+
+function flyToStation(station) {
+  if (!station._latlng) {
+    alert(`"${station.name}" doesn't have a pin on the map yet (it's in the red problem-addresses list) - it can't be located.`);
+    return;
+  }
+  map.setView(station._latlng, 15);
+  if (station._marker) {
+    station._marker.openPopup();
+  }
+}
+
+function renderSearchResults(query) {
+  const resultsEl = document.getElementById('search-results');
+  const q = query.trim().toLowerCase();
+  if (!q) {
+    resultsEl.innerHTML = '<div class="hint">Start typing to search</div>';
+    return;
+  }
+  const matches = SEARCH_INDEX.filter((e) => e.haystack.includes(q)).slice(0, 30);
+  if (matches.length === 0) {
+    resultsEl.innerHTML = '<div class="no-results">No matching stations</div>';
+    return;
+  }
+  resultsEl.innerHTML = '';
+  matches.forEach(({ station }) => {
+    const item = document.createElement('div');
+    item.className = 'result-item';
+    item.innerHTML = `<div class="r-name">${searchEsc(station.name)}</div>`
+      + `<div class="r-meta">${searchEsc(station.layer)} &middot; ${searchEsc(station.city)}`
+      + `${station.id ? ' &middot; #' + searchEsc(station.id) : ''}</div>`;
+    item.addEventListener('click', () => flyToStation(station));
+    resultsEl.appendChild(item);
+  });
+}
+
+function initStationSearch() {
+  SEARCH_INDEX = buildSearchIndex();
+  document.getElementById('search-box').style.display = 'block';
+
+  document.getElementById('station-search-input').addEventListener('input', (e) => {
+    renderSearchResults(e.target.value);
+  });
+
+  document.getElementById('search-minimize').addEventListener('click', () => {
+    document.getElementById('search-box-panel').style.display = 'none';
+    document.getElementById('search-icon-btn').style.display = 'flex';
+  });
+  document.getElementById('search-icon-btn').addEventListener('click', () => {
+    document.getElementById('search-box-panel').style.display = 'block';
+    document.getElementById('search-icon-btn').style.display = 'none';
+    document.getElementById('station-search-input').focus();
+  });
+}
+
 async function runGeocoding() {
   await loadPrecomputedCoords();
   for (let i = 0; i < STATIONS.length; i++) {
@@ -490,6 +633,7 @@ async function runGeocoding() {
   }
   document.getElementById('progress-wrap').style.display = 'none';
   showProblemAddresses();
+  initStationSearch();
 }
 
 runGeocoding();
