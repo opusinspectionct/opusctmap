@@ -922,7 +922,7 @@
   "106 Storrs Road, Willimantic, CT, 06226": {
     "lat": 41.7351111,
     "lon": -72.1984877,
-    "approx": true
+    "approx": false
   },
   "500 West Thames St, Norwich, CT, 06360": {
     "lat": 41.5035091,
@@ -1092,7 +1092,7 @@
   "575 Wauregan Rd, Danielson, CT, 06239": {
     "lat": 41.7646931,
     "lon": -71.9004954,
-    "approx": true
+    "approx": false
   },
   "61 Buckley Highway, Stafford Springs, CT, 06084": {
     "lat": 41.9562568,
@@ -1102,7 +1102,7 @@
   "166 Whiting Street, Guilford, CT, 06062": {
     "lat": 41.6616672,
     "lon": -72.7757391,
-    "approx": true
+    "approx": false
   },
   "19 Town Street, Norwich, CT, 06360": {
     "lat": 41.5462223,
@@ -1117,7 +1117,7 @@
   "37 Hall Rd, West Cornwall, CT, 06796": {
     "lat": 41.2396661,
     "lon": -73.2739791,
-    "approx": true
+    "approx": false
   },
   "64 West Street, Bristol, CT, 06010": {
     "lat": 41.6692724,
@@ -1267,7 +1267,7 @@
   "92 Gary school Road, Pomfret Center, CT, 06259": {
     "lat": 41.9055634,
     "lon": -71.9320731,
-    "approx": true
+    "approx": false
   },
   "1429 East Putnam Avenue, Old Greenwich, CT, 06870": {
     "lat": 41.0457229,
@@ -1297,7 +1297,7 @@
   "14 Cranbrook Drive, Enfield, CT, 06082": {
     "lat": 41.9767721,
     "lon": -72.5917113,
-    "approx": true
+    "approx": false
   },
   "221 W Main St, Avon, CT, 06001": {
     "lat": 41.8111099,
@@ -1412,7 +1412,7 @@
   "849 N Main St, Danielson, CT, 06239": {
     "lat": 41.8245834,
     "lon": -71.8788197,
-    "approx": true
+    "approx": false
   },
   "54 Pane Road, Newington, CT, 06111": {
     "lat": 41.6551513,
@@ -1427,7 +1427,7 @@
   "134 Albion Sreet, Bridgeport, CT, 06605": {
     "lat": 41.1792695,
     "lon": -73.1887863,
-    "approx": true
+    "approx": false
   },
   "452 Broad Street, New London, CT, 06320": {
     "lat": 41.363381,
@@ -1532,7 +1532,7 @@
   "904 Rte. 32, Uncasville, CT, 06382": {
     "lat": 41.6505112,
     "lon": -72.160381,
-    "approx": true
+    "approx": false
   },
   "233 A. White Street, Danbury, CT, 06810": {
     "lat": 41.3994842,
@@ -1667,7 +1667,7 @@
   "68-G Kingspring Road, Windsor Locks, CT, 06096": {
     "lat": 41.9312103,
     "lon": -72.6313849,
-    "approx": true
+    "approx": false
   },
   "387 North Main St, Naugatuck, CT, 06770": {
     "lat": 41.5011069,
@@ -2092,7 +2092,7 @@
   "14 Cranbrook Blvd, Enfield, CT, 06082": {
     "lat": 41.9918867,
     "lon": -72.5738524,
-    "approx": true
+    "approx": false
   },
   "485 Ella Grasso Blvd, New Haven, CT, 06511": {
     "lat": 41.2932792,
@@ -2202,7 +2202,7 @@
   "915 N Main St, Danielson, CT, 06239": {
     "lat": 41.5650918,
     "lon": -73.0301904,
-    "approx": true
+    "approx": false
   },
   "52 Hood Terrace, West Haven, CT, 06516": {
     "lat": 41.2710301,
@@ -2362,7 +2362,7 @@
   "525 Saw Mill Road, West Haven, CT, 06516": {
     "lat": 41.3091357,
     "lon": -72.6988798,
-    "approx": true
+    "approx": false
   },
   "2897 Berlin Turnpike, Newington, CT, 06111": {
     "lat": 41.6705866,
@@ -2482,7 +2482,7 @@
   "1157 Meriden-Waterbury Tpke, Plantsville, CT, 06479": {
     "lat": 41.5641907,
     "lon": -72.8840769,
-    "approx": true
+    "approx": false
   },
   "8 Herman Drive, Simsbury, CT, 06070": {
     "lat": 41.9178249,
@@ -2527,7 +2527,7 @@
   "88 Providence Tpke, Putnam, CT, 06260": {
     "lat": 41.4221089,
     "lon": -71.8884424,
-    "approx": true
+    "approx": false
   },
   "94 Kings Highway East, Fairfield, CT, 06825": {
     "lat": 41.1760674,
@@ -2872,7 +2872,7 @@
   "892 Route 32, North Franklin, CT, 06254": {
     "lat": 41.6499978,
     "lon": -72.1608248,
-    "approx": true
+    "approx": false
   },
   "124 W Stafford St, Stafford Springs, CT, 06076": {
     "lat": 41.9601857,
@@ -2892,7 +2892,7 @@
   "164 RT 66 E, Columbia, CT, 06237": {
     "lat": 40.9846742,
     "lon": -72.2278074,
-    "approx": true
+    "approx": false
   },
   "41 South Street, Danbury, CT, 06811": {
     "lat": 41.3891088,
@@ -3087,7 +3087,7 @@
   "526 Huntington Avenue, Waterbury, CT, 06708": {
     "lat": 41.2849344,
     "lon": -72.8900117,
-    "approx": true
+    "approx": false
   },
   "76 Meadow Street, East Hartford, CT, 06108": {
     "lat": 41.7609847,
@@ -3122,12 +3122,12 @@
   "72 Sandpit Rd, Danbury, CT, 06810": {
     "lat": 41.394817,
     "lon": -73.4540111,
-    "approx": true
+    "approx": false
   },
   "555 Lakewiid Rd, Waterbury, CT, 06704": {
     "lat": 41.5541144,
     "lon": -73.0435615,
-    "approx": true
+    "approx": false
   },
   "1441 N Colony Rd, Meriden, CT, 06450": {
     "lat": 41.5707596,
@@ -3147,12 +3147,12 @@
   "134 Club Rd, N Windham, CT, 06256": {
     "lat": 41.7230978,
     "lon": -72.1843298,
-    "approx": true
+    "approx": false
   },
   "578 Vauxhall St Ext, Waterford, CT, 06385": {
     "lat": 41.343025,
     "lon": -72.1290542,
-    "approx": true
+    "approx": false
   },
   "7 Mahan Dr, Norwich, CT, 06360": {
     "lat": 41.5488043,
