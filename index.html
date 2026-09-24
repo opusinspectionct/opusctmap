@@ -610,6 +610,10 @@ function renderSearchResults(query) {
 function initStationSearch() {
   SEARCH_INDEX = buildSearchIndex();
   document.getElementById('search-box').style.display = 'block';
+  // Starts collapsed to just the magnifying-glass icon; clicking it
+  // expands the full search field (mirrors the "Minimize" button below).
+  document.getElementById('search-box-panel').style.display = 'none';
+  document.getElementById('search-icon-btn').style.display = 'flex';
 
   document.getElementById('station-search-input').addEventListener('input', (e) => {
     renderSearchResults(e.target.value);
