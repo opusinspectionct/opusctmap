@@ -23,7 +23,9 @@
   #controls label { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; cursor: pointer; }
   #controls .swatch { width: 12px; height: 12px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
   #progress-wrap {
-    position: absolute; top: 10px; left: 10px; z-index: 1000;
+    /* sits below the search/help button row (44px tall + 10px gap) so it
+       never overlaps the help button, which is visible from page load */
+    position: absolute; top: 64px; left: 10px; z-index: 1000;
     background: white; padding: 10px 14px; border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3); font-size: 13px; max-width: 300px;
   }
@@ -43,10 +45,10 @@
   #problem-list li { margin-bottom: 6px; }
   #problem-list .addr { color: #888; }
   #help-btn {
-    position: absolute; top: 10px; right: 280px; z-index: 1000;
     background: white; border: none; border-radius: 50%;
-    width: 32px; height: 32px; font-size: 16px; font-weight: bold;
+    width: 44px; height: 44px; font-size: 18px; font-weight: bold;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3); cursor: pointer; color: #2563eb;
+    flex-shrink: 0;
   }
   #help-overlay {
     display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -64,8 +66,14 @@
   }
   #help-modal ul { padding-left: 18px; margin: 8px 0; }
 
-  /* ---- Station search (top-left, opposite the layer key) ---- */
-  #search-box { position: absolute; top: 10px; left: 10px; z-index: 1000; display: none; }
+  /* ---- Top-left button stack: help fixed on top, search below it.
+     Column layout means an expanded search panel just grows downward
+     from below the help button, which never moves. ---- */
+  #top-left-bar {
+    position: absolute; top: 10px; left: 10px; z-index: 1000;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+  }
+  #search-box { display: none; }
   #search-box-panel {
     background: white; padding: 12px 14px; border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3); width: 260px; font-size: 13px;
@@ -98,21 +106,23 @@
 <body>
 
 <div id="map"></div>
-<div id="search-box">
-  <div id="search-box-panel">
-    <h4>Find a Station</h4>
-    <input type="text" id="station-search-input" placeholder="Name, station #, or town...">
-    <div id="search-results"><div class="hint">Start typing to search</div></div>
-    <button id="search-minimize">&#9650; Minimize</button>
+<div id="top-left-bar">
+  <button id="help-btn" title="Help">?</button>
+  <div id="search-box">
+    <div id="search-box-panel">
+      <h4>Find a Station</h4>
+      <input type="text" id="station-search-input" placeholder="Name, station #, or town...">
+      <div id="search-results"><div class="hint">Start typing to search</div></div>
+      <button id="search-minimize">&#9650; Minimize</button>
+    </div>
+    <button id="search-icon-btn" title="Search stations">&#128269;</button>
   </div>
-  <button id="search-icon-btn" title="Search stations">&#128269;</button>
 </div>
 <div id="progress-wrap">
   <div id="progress-label">Starting geocoding...</div>
   <div id="progress-bar-bg"><div id="progress-bar-fill"></div></div>
   <div id="stats"></div>
 </div>
-<button id="help-btn" title="Help">?</button>
 <div id="help-overlay">
   <div id="help-modal">
     <span class="close-btn" id="help-close">&times;</span>
