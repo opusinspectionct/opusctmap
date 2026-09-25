@@ -23,9 +23,10 @@
   #controls label { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; cursor: pointer; }
   #controls .swatch { width: 12px; height: 12px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
   #progress-wrap {
-    /* sits below the search/help button row (44px tall + 10px gap) so it
-       never overlaps the help button, which is visible from page load */
-    position: absolute; top: 64px; left: 10px; z-index: 1000;
+    /* sits below the help+edit buttons (search icon stays hidden until
+       they're wired up), so it never overlaps buttons visible from
+       page load: 10px top margin + 2x(44px button + 8px gap) */
+    position: absolute; top: 116px; left: 10px; z-index: 1000;
     background: white; padding: 10px 14px; border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3); font-size: 13px; max-width: 300px;
   }
@@ -44,12 +45,16 @@
   }
   #problem-list li { margin-bottom: 6px; }
   #problem-list .addr { color: #888; }
-  #help-btn {
-    background: white; border: none; border-radius: 50%;
-    width: 44px; height: 44px; font-size: 18px; font-weight: bold;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3); cursor: pointer; color: #2563eb;
+  /* Shared look for the round top-left icon buttons (search, help, edit) -
+     same translucent glass style on all three. */
+  .round-icon-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 50%; border: none;
+    background: rgba(255,255,255,0.55); box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    font-size: 20px; cursor: pointer; color: #333; backdrop-filter: blur(2px);
     flex-shrink: 0;
   }
+  #help-btn { font-weight: bold; color: #2563eb; }
   #help-overlay {
     display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.4); z-index: 2000;
@@ -95,19 +100,13 @@
     width: 100%; margin-top: 8px; padding: 5px; border-radius: 6px;
     border: 1px solid #ccc; background: #f5f5f5; cursor: pointer; font-size: 11px;
   }
-  #search-icon-btn {
-    display: none; align-items: center; justify-content: center;
-    width: 44px; height: 44px; border-radius: 50%; border: none;
-    background: rgba(255,255,255,0.55); box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-    font-size: 20px; cursor: pointer; color: #333; backdrop-filter: blur(2px);
-  }
+  #search-icon-btn { display: none; }
 </style>
 </head>
 <body>
 
 <div id="map"></div>
 <div id="top-left-bar">
-  <button id="help-btn" title="Help">?</button>
   <div id="search-box">
     <div id="search-box-panel">
       <h4>Find a Station</h4>
@@ -115,8 +114,10 @@
       <div id="search-results"><div class="hint">Start typing to search</div></div>
       <button id="search-minimize">&#9650; Minimize</button>
     </div>
-    <button id="search-icon-btn" title="Search stations">&#128269;</button>
+    <button id="search-icon-btn" class="round-icon-btn" title="Search stations">&#128269;</button>
   </div>
+  <button id="help-btn" class="round-icon-btn" title="Help">?</button>
+  <button id="edit-btn" class="round-icon-btn" title="Edit">&#9999;&#65039;</button>
 </div>
 <div id="progress-wrap">
   <div id="progress-label">Starting geocoding...</div>
@@ -162,7 +163,6 @@ const LAYER_COLORS = {
   "Out of Program": "#dc2626",
   "Fleet": "#2563eb",
   "VIN Only": "#9333ea",
-  "Referrals": "#0891b2",
   "Schools": "#ea580c",
   "Decert/Notes": "#6b7280"
 };
@@ -182,20 +182,29 @@ document.getElementById('help-overlay').addEventListener('click', (e) => {
   }
 });
 
+// Edit button is a placeholder for now - the password-protected
+// add/edit-station form (PHP + database backend) hasn't been built yet.
+document.getElementById('edit-btn').addEventListener('click', () => {
+  alert('Editing stations from the map is coming soon - for now, edit the source spreadsheet directly.');
+});
+
 // DARK MODE (default) - monochrome base + tinted labels
 const darkBase = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png?key=cb1_33uz_1_86a95674329c905631fbb4de', {
   maxZoom: 19,
   attribution: '&copy; OpenStreetMap contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
 });
 
-// Labels layer, tinted light blue via CSS filter (used on both Dark and Satellite)
+// Labels layer (used on both Dark and Satellite). Just a plain black
+// halo around the native light-colored label text for contrast - no
+// hue-shifting filter, since that was tinting every place name a
+// distracting purple.
 const labelsLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png?key=cb1_33uz_1_86a95674329c905631fbb4de', {
   maxZoom: 19,
   pane: 'overlayPane'
 });
 labelsLayer.getContainer && labelsLayer.on('add', () => {
   const container = labelsLayer.getContainer();
-  if (container) container.style.filter = 'invert(100%) sepia(100%) saturate(4000%) hue-rotate(220deg) brightness(90%) contrast(110%) drop-shadow(1px 0 0 #ccc) drop-shadow(-1px 0 0 #ccc) drop-shadow(0 1px 0 #ccc) drop-shadow(0 -1px 0 #ccc)';
+  if (container) container.style.filter = 'drop-shadow(1px 0 0 #000) drop-shadow(-1px 0 0 #000) drop-shadow(0 1px 0 #000) drop-shadow(0 -1px 0 #000)';
 });
 
 // SATELLITE MODE - aerial imagery (Esri World Imagery, free, no key needed)
